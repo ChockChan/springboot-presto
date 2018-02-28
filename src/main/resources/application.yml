@@ -1,0 +1,12 @@
+Spring:
+  datasouuce:
+    driver-class-name: com.facebook.presto.jdbc.PrestoDriver
+    url: jdbc:presto://dev3.huoshu.ai:8285/hive/default
+    hikari:
+      connection-test-query: select 1
+      minimum-idle: 10
+      maximum-pool-size: 100
+      pool-name: presto
+      max-lifetime: 1800000
+      destroy-method: shutdown
+
