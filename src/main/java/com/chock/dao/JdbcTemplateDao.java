@@ -5,9 +5,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 
 /**
  * Created by chenwp on 2018/2/28.
@@ -19,8 +20,20 @@ public class JdbcTemplateDao {
     private JdbcTemplate jdbcTemplate;
 
     @Async
-    public CompletableFuture<Map> query(String sql){
-        Map<String, Object> result = jdbcTemplate.queryForObject(sql, Map.class);
+    public CompletableFuture<List<Map<String, Object>>> queryAsync(String sql){
+        Long startTime;
+        Long endTime;
+        List<Map<String, Object>> result;
+        startTime = System.currentTimeMillis();
+        result = jdbcTemplate.queryForList(sql);
+        endTime = System.currentTimeMillis();
+        Map<String, Object> map = new HashMap<>();
+        map.put("queryTime", endTime-startTime);
+        result.add(map);
         return CompletableFuture.completedFuture(result);
+    }
+
+    public List<Map<String, Object>> querySync(String sql){
+        return jdbcTemplate.queryForList(sql);
     }
 }

@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -48,16 +46,16 @@ public class QueryService {
 
     public Long query(String sqlPath) throws Exception{
         List<String> sqlList = this.readSql(sqlPath);
-        List<CompletableFuture<Map>> resultFuture = new ArrayList<>();
+        List<CompletableFuture<List<Map<String, Object>>>> resultFuture = new ArrayList<>();
         Long startTime = System.currentTimeMillis();
         for(String sql: sqlList){
-            resultFuture.add(jdbcTemplateDao.query(sql));
+            resultFuture.add(jdbcTemplateDao.queryAsync(sql));
         }
         CompletableFuture completableFuture = this.sequence(resultFuture);
         completableFuture.join();
         Long endTime = System.currentTimeMillis();
         Long cost = endTime - startTime;
-        for(CompletableFuture<Map> result: resultFuture){
+        for(CompletableFuture<List<Map<String, Object>>> result: resultFuture){
             System.out.println(result.get());
         }
         System.out.println("time:" + cost);
