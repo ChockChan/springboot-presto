@@ -1,7 +1,9 @@
-Spring:
-  datasouuce:
+spring:
+  datasource:
     driver-class-name: com.facebook.presto.jdbc.PrestoDriver
-    url: jdbc:presto://dev3.huoshu.ai:8285/hive/default
+    #driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:presto://127.0.0.1:8285/hive/default?user=root
+    #url: jdbc:mysql://127.0.0.1:3306/test
     hikari:
       connection-test-query: select 1
       minimum-idle: 10

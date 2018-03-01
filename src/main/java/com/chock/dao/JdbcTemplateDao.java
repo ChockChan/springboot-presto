@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
@@ -18,8 +19,8 @@ public class JdbcTemplateDao {
     private JdbcTemplate jdbcTemplate;
 
     @Async
-    public CompletableFuture<Integer> query(String sql){
-        Integer result = jdbcTemplate.queryForObject(sql, Integer.class);
+    public CompletableFuture<Map> query(String sql){
+        Map<String, Object> result = jdbcTemplate.queryForObject(sql, Map.class);
         return CompletableFuture.completedFuture(result);
     }
 }
