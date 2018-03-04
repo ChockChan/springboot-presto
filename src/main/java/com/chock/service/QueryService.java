@@ -70,4 +70,15 @@ public class QueryService {
                         .collect(toList())
                 );
     }
+
+    public Long querySync(String path){
+        List<String> sqlList = readSql(path);
+        Long startTime = System.currentTimeMillis();
+        for(String sql: sqlList){
+            jdbcTemplateDao.querySync(sql);
+        }
+        Long endTime = System.currentTimeMillis();
+        System.out.println("time: " + (endTime - startTime));
+        return endTime-startTime;
+    }
 }
